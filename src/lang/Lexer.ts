@@ -1,28 +1,37 @@
+import Lexeme from './Lexeme';
+import LexemeType from './Terminal';
+import { Terminals } from './TerminalsEnum';
+
 export default abstract class Lexer {
-  static tokenize(text: string): Array<string | null> {
-    let tokens: (string | null)[] = [];
-    const strings = text.split(';').filter((str) => {
-      return str.length;
-    });
-    tokens = strings.map((token) => {
-      const match = token?.match(/(.+)/);
-      if (!match) return null;
-      return match[1];
-    });
+  static tokenize(text: string): Array<string> {
+    const tokens = text.split(';').filter((token) => token);
 
     return tokens;
   }
 
-  static extractLexemes(token: string | null): Array<string> {
-    let lexemes: Array<string> = [];
+  static extractLexemes(token: string): Array<Lexeme> {
+    let lexemes: Array<Lexeme> = [];
 
-    if (!token) return lexemes;
+    const words = token.split(/\s+/).filter((word) => word);
 
-    let words = token.split(/\s+/);
-    words.forEach((word) => {
-      lexemes.push(word);
+    lexemes = words.map((word) => {
+      const terminal = Lexer.matchTerminal(word);
+      if (terminal) return new Lexeme(terminal, word);
+      throw new Error(`Invalid syntax: ${word} ${word.length}`);
     });
 
     return lexemes;
+  }
+
+  static matchTerminal(text: string): LexemeType | null {
+    for (const term of Terminals) {
+      const match = text.match(term.pattern);
+
+      if (match) {
+        console.log(` ${text} => ${term.name}`);
+        return term;
+      }
+    }
+    return null;
   }
 }

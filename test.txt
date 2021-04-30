@@ -1,4 +1,4 @@
 log "Hello" "World";
 command1 "Hello" "World";hello 123 "World1" "World2" "World3" "World4";
-open "Hello" "World";
+open "Hello" + "World";
 log "Hello"       "World";
