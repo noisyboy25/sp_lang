@@ -1,11 +1,9 @@
-import LexemeType from './Terminal';
+export default class Terminal {
+  name: string;
+  pattern: RegExp;
 
-export default class Lexeme {
-  constructor(type: LexemeType, value: any) {
-    this.type = type;
-    this.value = value;
+  constructor(name: string, pattern: RegExp) {
+    this.name = name;
+    this.pattern = pattern;
   }
-
-  type: LexemeType;
-  value: any;
 }

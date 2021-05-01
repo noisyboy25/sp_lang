@@ -9,15 +9,13 @@ const main = async () => {
       path.join(__dirname, '..', 'test.txt'),
       'utf8'
     );
-    console.log(`Raw: \n"${raw}"\n`);
+    console.log('Raw: ', raw, '\n');
 
-    const tokens = Lexer.tokenize(raw);
-    console.log(`Tokens: \n${tokens}\n`);
+    const words = Lexer.extractWords(raw);
+    console.log('Words');
 
-    const lexemes = tokens.map((token) => Lexer.extractLexemes(token));
-    console.log(
-      `Lexemes: \n${util.inspect(lexemes, { depth: null, colors: true })}\n`
-    );
+    const tokens = Lexer.extractTokens(words);
+    console.log('Tokens: ', tokens);
   } catch (error) {
     return console.log(error);
   }
