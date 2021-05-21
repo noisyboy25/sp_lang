@@ -1,9 +1,11 @@
-export default class Terminal {
-  name: string;
-  pattern: RegExp;
+import Terminal from './Terminal';
 
-  constructor(name: string, pattern: RegExp) {
-    this.name = name;
-    this.pattern = pattern;
+export default class Lexeme {
+  type: Terminal;
+  value: string;
+
+  constructor(type: Terminal, value: string) {
+    this.type = type;
+    this.value = value;
   }
 }

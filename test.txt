@@ -1,4 +1,4 @@
-log("Hello","World")
-command1("Hello", "World") hello(123,"World1","World2","World3","World4")
-open("Hello" + "World")
-log("Hello" ,      "World")
+log(123,4124)
+command1(435, 876) hello(123,8643,41532,1351,5422)
+open(5463 + 4125)
+log(1246 ,      417)$

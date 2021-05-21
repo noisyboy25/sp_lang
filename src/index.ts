@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import util from 'util';
-import Lexer from './lang/Lexer';
+import Lexer from './lang/Parser';
 
 const main = async () => {
   try {
@@ -9,13 +8,12 @@ const main = async () => {
       path.join(__dirname, '..', 'test.txt'),
       'utf8'
     );
-    console.log('Raw: ', raw, '\n');
+    if (!raw) throw new Error('No input');
 
-    const words = Lexer.extractWords(raw);
-    console.log('Words');
+    console.log('Raw: \n', raw, '\n');
 
-    const tokens = Lexer.extractTokens(words);
-    console.log('Tokens: ', tokens);
+    const lexemes = Lexer.extractLexemes(raw);
+    console.log('Tokens: \n', lexemes, '\n');
   } catch (error) {
     return console.log(error);
   }
