@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import Lexer from './lang/Parser';
+import Lexer from './lang/Lexer';
 
 const main = async () => {
   try {
