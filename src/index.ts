@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Lexer from './lang/Lexer';
+import Parser from './lang/Parser';
 
 const main = async () => {
   try {
@@ -13,7 +14,14 @@ const main = async () => {
     console.log('Raw: \n', raw, '\n');
 
     const lexemes = Lexer.extractLexemes(raw);
-    console.log('Tokens: \n', lexemes, '\n');
+    lexemes.forEach((token) =>
+      console.log(`${token.type.name}  \t${token.value}`)
+    );
+
+    const parser = new Parser(lexemes);
+    const tree = parser.lang();
+
+    console.log(tree);
   } catch (error) {
     return console.log(error);
   }

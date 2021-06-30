@@ -1,17 +1,19 @@
 import Lexeme from './Lexeme';
-import Terminal from './Terminal';
+import Terminal, { TerminalType } from './Terminal';
 
 export default abstract class Lexer {
   static TERMINALS: Terminal[] = [
-    new Terminal('KEYWORD_WHILE', /^while$/),
-    new Terminal('OPERATOR', /^[\+|\-|\*|\/]$/),
-    new Terminal('LITERAL_INT', /^\d+$/),
-    new Terminal('IDENTIFIER', /^[A-Z]+[A-Z0-9]*$/i),
-    new Terminal('SPACE', /^\s+$/),
-    new Terminal('PARENTHESIS_L', /^\($/),
-    new Terminal('PARENTHESIS_R', /^\)$/),
-    new Terminal('NEWLINE', /^\r?\n$/),
-    new Terminal('COMMA', /^\,$/),
+    new Terminal(TerminalType.While, /^while$/),
+    new Terminal(TerminalType.Assign, /^=$/),
+    new Terminal(TerminalType.Operator, /^[\+|\-|\*|\/]$/),
+    new Terminal(TerminalType.Int, /^\d+$/),
+    new Terminal(TerminalType.Identifier, /^[A-Z]+[A-Z0-9]*$/i),
+    new Terminal(TerminalType.Space, /^\s+$/),
+    new Terminal(TerminalType.ParenthesisL, /^\($/),
+    new Terminal(TerminalType.ParenthesisR, /^\)$/),
+    new Terminal(TerminalType.Semicolon, /^;$/),
+    new Terminal(TerminalType.NewLine, /^\r?\n$/),
+    new Terminal(TerminalType.Comma, /^\,$/),
   ];
 
   static extractLexemes(raw: string): Lexeme[] {
