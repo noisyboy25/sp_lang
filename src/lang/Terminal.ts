@@ -1,8 +1,23 @@
+export enum TerminalType {
+  While = 'WHILE_KEYWORD',
+  Assign = 'ASSIGN',
+  Operator = 'OPERATOR',
+  Int = 'LITERAL_INT',
+  Identifier = 'IDENTIFIER',
+  Space = 'SPACE',
+  ParenthesisL = 'PARENTHESIS_L',
+  ParenthesisR = 'PARENTHESIS_R',
+  Semicolon = 'SEMICOLON',
+  NewLine = 'NEWLINE',
+  Comma = 'COMMA',
+  If = 'IF_KEYWORD',
+}
+
 export default class Terminal {
-  name: string;
+  name: TerminalType;
   pattern: RegExp;
 
-  constructor(name: string, pattern: RegExp) {
+  constructor(name: TerminalType, pattern: RegExp) {
     this.name = name;
     this.pattern = pattern;
   }
