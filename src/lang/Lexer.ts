@@ -14,6 +14,7 @@ export default abstract class Lexer {
     new Terminal(TerminalType.Semicolon, /^;$/),
     new Terminal(TerminalType.NewLine, /^\r?\n$/),
     new Terminal(TerminalType.Comma, /^\,$/),
+    new Terminal(TerminalType.If, /^if$/),
   ];
 
   static extractLexemes(raw: string): Lexeme[] {

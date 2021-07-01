@@ -3,6 +3,8 @@ import path from 'path';
 import Lexer from './lang/Lexer';
 import Parser from './lang/Parser';
 
+const logTree = require('console-log-tree');
+
 const main = async () => {
   try {
     const raw = await fs.promises.readFile(
@@ -21,7 +23,8 @@ const main = async () => {
     const parser = new Parser(lexemes);
     const tree = parser.lang();
 
-    console.log(tree);
+    console.dir(tree, { depth: null });
+    logTree.log(tree);
   } catch (error) {
     return console.log(error);
   }

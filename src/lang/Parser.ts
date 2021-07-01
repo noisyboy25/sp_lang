@@ -30,7 +30,9 @@ export default class Parser {
     }
     if (
       this.getCurrentToken() &&
-      ![TerminalType.Identifier].includes(this.getCurrentToken()!.type.name)
+      ![TerminalType.Identifier, TerminalType.If, TerminalType.While].includes(
+        this.getCurrentToken()!.type.name
+      )
     ) {
       throw new Error('Invalid token');
     }
@@ -39,7 +41,10 @@ export default class Parser {
 
   private expr(): AstNode {
     const node = new AstNode('expr');
-    if (this.getCurrentToken() && this.getCurrentToken()!.type.name) {
+    if (
+      this.getCurrentToken() &&
+      this.getCurrentToken()!.type.name === TerminalType.Identifier
+    ) {
       node.addChild(this.assignExpr());
     }
     return node;
@@ -59,14 +64,23 @@ export default class Parser {
 
   private mathExpr(): AstNode {
     const node = new AstNode('mathExpr');
-    if ([TerminalType.Identifier].includes(this.getCurrentToken()!.type.name)) {
+    if (
+      [TerminalType.Identifier, TerminalType.Int].includes(
+        this.getCurrentToken()!.type.name
+      )
+    ) {
       node.addChild(this.value());
-    } else if (
+    }
+
+    while (
       [TerminalType.Operator].includes(this.getCurrentToken()!.type.name)
     ) {
       this.match([TerminalType.Operator], node);
+
       if (
-        [TerminalType.Identifier].includes(this.getCurrentToken()!.type.name)
+        [TerminalType.Identifier, TerminalType.Int].includes(
+          this.getCurrentToken()!.type.name
+        )
       ) {
         node.addChild(this.mathExpr());
       } else {
@@ -75,6 +89,7 @@ export default class Parser {
     }
     return node;
   }
+
   private value(): AstNode {
     const node = new AstNode('value');
     this.match([TerminalType.Int, TerminalType.Identifier], node);
@@ -86,7 +101,7 @@ export default class Parser {
       this.getCurrentToken() &&
       types.includes(this.getCurrentToken()!.type.name)
     ) {
-      node.addChild(node);
+      // node.addChild(node);
       this.index++;
     } else {
       throw new Error(
