@@ -5,7 +5,7 @@ import Parser from './lang/Parser';
 
 const logTree = require('console-log-tree');
 
-const main = async () => {
+export const main = async () => {
   try {
     const raw = await fs.promises.readFile(
       path.join(__dirname, '..', 'test.txt'),
@@ -19,11 +19,13 @@ const main = async () => {
     lexemes.forEach((token) =>
       console.log(`${token.type.name}  \t${token.value}`)
     );
+    console.log('');
 
     const parser = new Parser(lexemes);
     const tree = parser.lang();
-
     console.dir(tree, { depth: null });
+
+    console.log('\nTree:');
     logTree.log(tree);
   } catch (error) {
     return console.log(error);

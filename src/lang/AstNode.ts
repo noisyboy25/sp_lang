@@ -1,11 +1,17 @@
 import Lexeme from './Lexeme';
 
 export default class AstNode {
-  name: string | Lexeme;
+  name: String;
   children: AstNode[] = [];
 
   constructor(value: string | Lexeme) {
-    this.name = value;
+    switch (typeof value) {
+      case 'string':
+        this.name = value;
+        break;
+      case 'object':
+        this.name = `${value.type.name} '${value.value}'`;
+    }
   }
 
   addChild(node: AstNode) {

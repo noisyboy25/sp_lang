@@ -19,96 +19,76 @@ export default class Parser {
 
   lang(): AstNode {
     const node = new AstNode('lang');
-    node.addChild(this.expr());
-    while (
-      this.getCurrentToken() &&
-      [TerminalType.Identifier, TerminalType.If, TerminalType.While].includes(
-        this.getCurrentToken()!.type.name
-      )
-    ) {
+
+    while (this.getCurrentToken()) {
       node.addChild(this.expr());
     }
-    if (
-      this.getCurrentToken() &&
-      ![TerminalType.Identifier, TerminalType.If, TerminalType.While].includes(
-        this.getCurrentToken()!.type.name
-      )
-    ) {
-      throw new Error('Invalid token');
-    }
+
     return node;
   }
 
-  private expr(): AstNode {
+  private expr() {
     const node = new AstNode('expr');
-    if (
-      this.getCurrentToken() &&
-      this.getCurrentToken()!.type.name === TerminalType.Identifier
-    ) {
+
+    if (this.match([TerminalType.Identifier])) {
       node.addChild(this.assignExpr());
     }
-    return node;
-  }
 
-  private assignExpr(): AstNode {
-    const node = new AstNode('assignExpr');
-    this.match([TerminalType.Identifier], node);
-    this.match([TerminalType.Assign], node);
-
-    node.addChild(this.mathExpr());
-
-    this.match([TerminalType.Semicolon], node);
-
-    return node;
-  }
-
-  private mathExpr(): AstNode {
-    const node = new AstNode('mathExpr');
-    if (
-      [TerminalType.Identifier, TerminalType.Int].includes(
-        this.getCurrentToken()!.type.name
-      )
-    ) {
-      node.addChild(this.value());
+    if (this.match([TerminalType.Semicolon])) {
+      this.addTerminal(node);
     }
 
-    while (
-      [TerminalType.Operator].includes(this.getCurrentToken()!.type.name)
-    ) {
-      this.match([TerminalType.Operator], node);
+    return node;
+  }
 
-      if (
-        [TerminalType.Identifier, TerminalType.Int].includes(
-          this.getCurrentToken()!.type.name
-        )
-      ) {
+  private assignExpr() {
+    const node = new AstNode('assignExpr');
+
+    if (this.match([TerminalType.Identifier])) {
+      this.addTerminal(node);
+    }
+
+    if (this.match([TerminalType.Assign])) {
+      this.addTerminal(node);
+    }
+
+    if (this.match([TerminalType.Identifier, TerminalType.Int])) {
+      node.addChild(this.mathExpr());
+    }
+
+    return node;
+  }
+
+  private mathExpr() {
+    const node = new AstNode('mathExpr');
+
+    if (this.match([TerminalType.Identifier, TerminalType.Int])) {
+      this.addTerminal(node);
+    }
+
+    if (this.match([TerminalType.Operator])) {
+      this.addTerminal(node);
+
+      if (this.match([TerminalType.Identifier, TerminalType.Int])) {
         node.addChild(this.mathExpr());
-      } else {
-        throw new Error('Invalid token');
       }
     }
+
     return node;
   }
 
-  private value(): AstNode {
-    const node = new AstNode('value');
-    this.match([TerminalType.Int, TerminalType.Identifier], node);
-    return node;
-  }
-
-  private match(types: TerminalType[], node: AstNode) {
-    if (
+  private match(terminals: TerminalType[]) {
+    return !!(
       this.getCurrentToken() &&
-      types.includes(this.getCurrentToken()!.type.name)
-    ) {
-      // node.addChild(node);
+      terminals.includes(this.getCurrentToken()!.type.name)
+    );
+  }
+
+  private addTerminal(node: AstNode) {
+    const terminal = this.getCurrentToken();
+    if (terminal) {
+      node.addChild(new AstNode(terminal));
       this.index++;
-    } else {
-      throw new Error(
-        `Invalid token ${this.getCurrentToken()?.type.name} at index ${
-          this.index
-        }`
-      );
     }
   }
 }

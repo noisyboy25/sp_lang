@@ -40,7 +40,6 @@ export default abstract class Lexer {
     }
 
     buffer = buffer.substr(0, buffer.length - 1);
-    console.log(buffer);
 
     for (const term of this.TERMINALS) {
       if (term.matches(buffer)) {
