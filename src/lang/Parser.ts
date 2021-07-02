@@ -36,7 +36,8 @@ export default class Parser {
       node.addChild(this.assignExpr());
     } else if (this.match([TerminalType.If])) {
       node.addChild(this.ifBlock());
-    } else if (this.match([TerminalType.Semicolon])) {
+    }
+    if (this.match([TerminalType.Semicolon])) {
       this.addTerminal(node);
     }
 
