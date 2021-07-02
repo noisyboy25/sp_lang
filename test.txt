@@ -1,2 +1,3 @@
 a -> 2 + b;
-if(a = 5) { a -> b - c }$
+if (a = 5) { a -> b - c }
+while (true) { c -> b * b * b }$

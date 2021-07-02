@@ -3,8 +3,8 @@ import Terminal, { TerminalType } from './Terminal';
 
 export default abstract class Lexer {
   static TERMINALS: Terminal[] = [
-    new Terminal(TerminalType.While, /^while$/),
     new Terminal(TerminalType.If, /^if$/),
+    new Terminal(TerminalType.While, /^while$/),
     new Terminal(TerminalType.Operator, /^[\+|\-|\*|\/]$/),
     new Terminal(TerminalType.BoolOperator, /^[=|<|>]$/),
     new Terminal(TerminalType.Assign, /^\->$/),
