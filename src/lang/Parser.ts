@@ -148,7 +148,7 @@ export default class Parser {
   }
 
   private boolExpr() {
-    const node = new AstNode('mathExpr');
+    const node = new AstNode('boolExpr');
 
     if (this.match([TerminalType.Identifier, TerminalType.Int])) {
       this.addTerminal(node);
