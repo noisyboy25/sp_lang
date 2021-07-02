@@ -21,6 +21,8 @@ export default class Parser {
     const node = new AstNode('lang');
 
     while (this.getCurrentToken()) {
+      // console.log(this.getCurrentToken());
+
       node.addChild(this.expr());
     }
 
@@ -32,9 +34,77 @@ export default class Parser {
 
     if (this.match([TerminalType.Identifier])) {
       node.addChild(this.assignExpr());
+    } else if (this.match([TerminalType.If])) {
+      node.addChild(this.ifBlock());
+    } else if (this.match([TerminalType.While])) {
+      node.addChild(this.whileBlock());
     }
 
     if (this.match([TerminalType.Semicolon])) {
+      this.addTerminal(node);
+    }
+
+    return node;
+  }
+
+  private ifBlock(): AstNode {
+    const node = new AstNode('ifBlock');
+
+    if (this.match([TerminalType.If])) {
+      this.addTerminal(node);
+    }
+
+    if (this.match([TerminalType.ParenthesisL])) {
+      this.addTerminal(node);
+    }
+
+    node.addChild(this.boolExpr());
+
+    if (this.match([TerminalType.ParenthesisR])) {
+      this.addTerminal(node);
+    }
+
+    if (this.match([TerminalType.CurlyL])) {
+      this.addTerminal(node);
+    }
+
+    while (this.match([TerminalType.Identifier])) {
+      node.addChild(this.expr());
+    }
+
+    if (this.match([TerminalType.CurlyR])) {
+      this.addTerminal(node);
+    }
+
+    return node;
+  }
+
+  private whileBlock(): AstNode {
+    const node = new AstNode('whileBlock');
+
+    if (this.match([TerminalType.While])) {
+      this.addTerminal(node);
+    }
+
+    if (this.match([TerminalType.ParenthesisL])) {
+      this.addTerminal(node);
+    }
+
+    node.addChild(this.boolExpr());
+
+    if (this.match([TerminalType.ParenthesisR])) {
+      this.addTerminal(node);
+    }
+
+    if (this.match([TerminalType.CurlyL])) {
+      this.addTerminal(node);
+    }
+
+    while (this.match([TerminalType.Identifier])) {
+      node.addChild(this.expr());
+    }
+
+    if (this.match([TerminalType.CurlyR])) {
       this.addTerminal(node);
     }
 
@@ -72,6 +142,22 @@ export default class Parser {
       if (this.match([TerminalType.Identifier, TerminalType.Int])) {
         node.addChild(this.mathExpr());
       }
+    }
+
+    return node;
+  }
+
+  private boolExpr() {
+    const node = new AstNode('mathExpr');
+
+    if (this.match([TerminalType.Identifier, TerminalType.Int])) {
+      this.addTerminal(node);
+    }
+
+    if (this.match([TerminalType.BoolOperator])) {
+      this.addTerminal(node);
+
+      node.addChild(this.mathExpr());
     }
 
     return node;

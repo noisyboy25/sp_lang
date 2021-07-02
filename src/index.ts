@@ -13,17 +13,18 @@ export const main = async () => {
     );
     if (!raw) throw new Error('No input');
 
-    console.log('Raw: \n', raw, '\n');
+    console.log('Raw:\n', raw, '\n');
 
-    const lexemes = Lexer.extractLexemes(raw);
+    const lexemes = Lexer.extractLexemes(raw.replace(/\s*|\n*/g, ''));
     lexemes.forEach((token) =>
       console.log(`${token.type.name}  \t${token.value}`)
     );
     console.log('');
 
     const parser = new Parser(lexemes);
+
     const tree = parser.lang();
-    console.dir(tree, { depth: null });
+    // console.dir(tree, { depth: null });
 
     console.log('\nTree:');
     logTree.log(tree);
