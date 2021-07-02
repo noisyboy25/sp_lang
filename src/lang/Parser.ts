@@ -21,7 +21,7 @@ export default class Parser {
     const node = new AstNode('lang');
 
     while (this.getCurrentToken()) {
-      console.log(this.getCurrentToken());
+      // console.log(this.getCurrentToken());
 
       node.addChild(this.expr());
     }
